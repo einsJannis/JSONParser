@@ -3,6 +3,22 @@ package dev.einsjannis.jsonparser;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * An extension to the {@link ArrayList} class. In addition to all the
+ * {@link ArrayList} features, this class provides the functionality to parse
+ * itself from a {@code JSON string}.
+ * <p>
+ * As part of the {@code JSON parser} witch is contained inside of this class,
+ * it implements {@link ClassWithIterator}. The ability to change the position
+ * of the {@code iterator} ({@link #i}) allows an external class to skip a section in the
+ * parsing process and thus allowing {@code nested data structures}.
+ *
+ * @author einsJannis
+ * @author Flexusma
+ * @version 1.0
+ * @see ArrayList
+ * @see ClassWithIterator
+ */
 public class JSONArray extends ArrayList<Object> implements ClassWithIterator {
 
     private int i;
@@ -16,11 +32,18 @@ public class JSONArray extends ArrayList<Object> implements ClassWithIterator {
         this.i = i;
     }
 
+    /**
+     * Constructs a new {@code JSONArray} with the elements provided in the list
+     * of {@link JSONPart}s.
+     *
+     * @param parts a list of {@link JSONPart}s which should get parsed
+     * @throws JSONSyntaxError if the json is malformed
+     */
     public JSONArray(List<JSONPart> parts) throws JSONSyntaxError {
-        loadContents(parts);
+        parseJSON(parts);
     }
 
-    private void loadContents(List<JSONPart> parts) throws JSONSyntaxError {
+    private void parseJSON(List<JSONPart> parts) throws JSONSyntaxError {
         if (parts.get(0).getType() != JSONPart.Type.ARRAY_START) {
             throw new JSONSyntaxError(parts.get(0));
         }
@@ -63,6 +86,17 @@ public class JSONArray extends ArrayList<Object> implements ClassWithIterator {
         throw new JSONSyntaxError(parts.get(0));
     }
 
+    /**
+     * Returns {@code JSONArray} to witch the iterator of the
+     * {@link ClassWithIterator} points to.
+     * <p>
+     * If no JSONArray can be found it throws an {@link JSONSyntaxError}.
+     *
+     * @param parent {@link ClassWithIterator} which iterator points to the array start ({@code '['})
+     * @param parts list of {@link JSONPart}s witch contain the requested JSONArray
+     * @return the requested JSONArray
+     * @throws JSONSyntaxError if json is malformed
+     */
     public static JSONArray scanForSelf(ClassWithIterator parent, List<JSONPart> parts) throws JSONSyntaxError {
         List<JSONPart> partList = parts.subList(parent.getIterator(), parts.size());
         int openObjects = 0;
@@ -82,9 +116,25 @@ public class JSONArray extends ArrayList<Object> implements ClassWithIterator {
         throw new JSONSyntaxError(parts.get(0));
     }
 
+    /**
+     * Creates a new {@code JSONArray} with a {@code JSON string}.
+     *
+     * @param string json string witch should get parsed
+     * @return the parsed JSONArray
+     * @throws JSONSyntaxError if parsed json is malformed
+     */
     public static JSONArray fromString(String string) throws JSONSyntaxError {
         return fromChars(string.toCharArray());
     }
+
+    /**
+     * Creates a new {@code JSONArray} with a {@code JSON string} as a
+     * {@code Character array}.
+     *
+     * @param chars json string as char array witch should get parsed
+     * @return the parsed JSONArray
+     * @throws JSONSyntaxError if parsed json is malformed
+     */
     public static JSONArray fromChars(char[] chars) throws JSONSyntaxError {
         return new JSONArray(new JSONLexer(chars).lex());
     }

@@ -3,14 +3,37 @@ package dev.einsjannis.jsonparser;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This lexer class converts a {@code JSON string} into an list of
+ * {@link JSONPart}s witch can later be read by a JSONParser.
+ *
+ * @author einsJannis
+ * @author Flexusma
+ * @version 1.0
+ */
 public class JSONLexer {
     private final char[] chars;
     private int i = 0;
 
+    /**
+     * Constructs a new {@code instance} of the {@code JSONLexer} with a
+     * {@code JSON string} as a {@code Character array}.
+     *
+     * @param chars {@code JSON string} to parse as {@code Character array}
+     */
     public JSONLexer(char[] chars) {
         this.chars = chars;
     }
 
+    /**
+     * This method is the heart of the {@code JSONLexer} class and does the
+     * lexical analysis on the provided {@code JSON string}.
+     * <p>
+     * This process returns a list of {@link JSONPart}s.
+     *
+     * @return the list of {@link JSONPart}s
+     * @throws JSONSyntaxError if the {@code JSON string} is malformed
+     */
     public List<JSONPart> lex() throws JSONSyntaxError {
         List<JSONPart> parts = new ArrayList<JSONPart>();
         while ( i < chars.length ) {
