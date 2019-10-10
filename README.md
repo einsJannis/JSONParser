@@ -18,7 +18,7 @@ Done.
 
 ## Any questions or suggestions?
 
-Contact me (links to every thing are on my website).
+Contact me (links to everything are on my website).
 
 ## Thanks
 
