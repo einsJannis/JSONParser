@@ -1,3 +1,9 @@
+# This repository
+
+This repository contains my first kinda released library and my first shot at parsing.
+I'm not developing this any futher and this should not be used by anyone.
+This simply serves the purpose of archiving my history.
+
 # JSON parser
 
 This is an Java API for loading/parsing JSON.
